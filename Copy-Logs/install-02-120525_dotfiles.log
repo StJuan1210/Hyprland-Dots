@@ -1,0 +1,31 @@
+Nvidia GPU detected. Setting up proper env's and configs
+[33m[NOTE](B[m kb_layout us configured in settings.  
+You chose ≥ 1440p resolution.
+You chose not to change to 12H format.
+No changes made. Rainbow borders remain enabled.
+[33m[NOTE](B[m Wallpapers downloaded successfully.
+[33m[NOTE](B[m Wallpapers copied successfully.
+[[1m[34mI[39m[0m] [1m[35mimage[39m[0m: .wallpaper_modified
+[[1m[34mI[39m[0m] [1m[35mimage parser[39m[0m: Using [94m[1mKmeans[0m[39m backend parser
+[[1m[34mI[39m[0m] [1m[35mthreshold[39m[0m: Using a threshold of 10 in between colors.
+[[1m[34mI[39m[0m] [1m[35mcolorspace[39m[0m: Using [35m[1mLch[0m[39m colorspace variation
+[[1m[34mI[39m[0m] [1m[35mscheme palette[39m[0m: Using [94m[1mDark16[0m[39m palette
+▐⠂       ▌     0.000 s	Generating color scheme..▐⠈       ▌     0.081 s	Generating color scheme..▐ ⠂      ▌     0.126 s	Generating color scheme..[2K[[1m[34mI[39m[0m] Not enough colors in the image, artificially generating new colors...
+[[1m[34mI[39m[0m] [1m[35mfallback generation method[39m[0m: Using [34mInterpolate[39m to fill the palette
+[[1m[34mI[39m[0m] Color scheme palette generated!
+
+[48;2;8;4;2m    [49m[48;2;30;17;7m    [49m[48;2;32;19;9m    [49m[48;2;53;49;31m    [49m[48;2;58;57;36m    [49m[48;2;117;116;97m    [49m[48;2;188;149;130m    [49m[48;2;244;218;206m    [49m
+[48;2;171;153;144m    [49m[48;2;40;22;9m    [49m[48;2;42;25;11m    [49m[48;2;71;66;41m    [49m[48;2;78;76;48m    [49m[48;2;156;155;130m    [49m[48;2;250;198;173m    [49m[48;2;244;218;206m    [49m
+
+[[1m[34mI[39m[0m] [1m[35mtemplates[39m[0m: Writing templates..
+  * Templated [1mrofi[0m to '[3m~/.config/rofi/wallust/colors-rofi.rasi[0m'
+[[1m[31mW[39m[0m] [1mrofi[0m: Reading [3m/home/juangt/.config/wallust/colors-rofi.rasi[0m failed: No such file or directory (os error 2)
+  * Templated [1mcava[0m to '[3m~/.config/cava/config[0m'
+[[1m[31mW[39m[0m] [1mcava[0m: Reading [3m/home/juangt/.config/wallust/colors-cava[0m failed: No such file or directory (os error 2)
+  * Templated [1mwaybar[0m to '[3m~/.config/waybar/wallust/colors-waybar.css[0m'
+[[1m[31mW[39m[0m] [1mwaybar[0m: Reading [3m/home/juangt/.config/wallust/colors-waybar.css[0m failed: No such file or directory (os error 2)
+  * Templated [1mhypr[0m to '[3m~/.config/hypr/wallust/wallust-hyprland.conf[0m'
+[[1m[31mW[39m[0m] [1mhypr[0m: Reading [3m/home/juangt/.config/wallust/colors-hyprland.conf[0m failed: No such file or directory (os error 2)
+[[1m[34mI[39m[0m] [1m[35mcache[39m[0m: Saving scheme to cache.
+
+[5m[1m[38;2;244;218;206mE [39m[0m[0m[5m[1m[38;2;250;198;173mN [39m[0m[0m[5m[1m[38;2;156;155;130mJ [39m[0m[0m[5m[1m[38;2;78;76;48mO [39m[0m[0m[5m[1m[38;2;71;66;41mY [39m[0m[0m[9m  [0m[5m[1m[38;2;42;25;11mT [39m[0m[0m[5m[1m[38;2;40;22;9mH [39m[0m[0m[5m[1m[38;2;171;153;144mE [39m[0m[0m[9m  [0m[5m[1m[38;2;244;218;206mP [39m[0m[0m[5m[1m[38;2;188;149;130mA [39m[0m[0m[5m[1m[38;2;117;116;97mL [39m[0m[0m[5m[1m[38;2;58;57;36mE [39m[0m[0m[5m[1m[38;2;53;49;31mT [39m[0m[0m[5m[1m[38;2;32;19;9mT [39m[0m[0m[5m[1m[38;2;30;17;7mE [39m[0m[0m[5m[1m[38;2;253;235;226m! [39m[0m[0m
