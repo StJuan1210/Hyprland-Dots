@@ -41,7 +41,7 @@
 
 "modules-right": [
 	"network#speed",
-	"group/connections",
+	// "group/connections",
 	"custom/separator#line",
 	"tray",
 	"mpris", 

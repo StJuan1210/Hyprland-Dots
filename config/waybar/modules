@@ -297,7 +297,6 @@
 		"transition-left-to-right": true
         },
 	"modules": [
-		"network",
 		"bluetooth",
 	]
 },
