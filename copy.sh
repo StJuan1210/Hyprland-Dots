@@ -54,7 +54,7 @@ if lspci -k | grep -A 2 -E "(VGA|3D)" | grep -iq nvidia; then
   sed -i '/env = __GLX_VENDOR_LIBRARY_NAME,nvidia/s/^#//' config/hypr/UserConfigs/ENVariables.conf
   sed -i '/env = NVD_BACKEND,direct/s/^#//' config/hypr/UserConfigs/ENVariables.conf
   # enabling no hardware cursors if nvidia detected
-  sed -i 's/^\([[:space:]]*no_hardware_cursors[[:space:]]*=[[:space:]]*\)false/\1true/' config/hypr/UserConfigs/UserSettings.conf  
+  sed -i 's/^\([[:space:]]*no_hardware_cursors[[:space:]]*=[[:space:]]*\)2/\1true/' config/hypr/UserConfigs/UserSettings.conf  
   # disabling explicit sync for nvidia for now (Hyprland 0.42.0)
   #sed -i 's/  explicit_sync = 2/  explicit_sync = 0/' config/hypr/UserConfigs/UserSettings.conf
 fi
@@ -63,9 +63,9 @@ fi
 if hostnamectl | grep -q 'Chassis: vm'; then
   echo "System is running in a virtual machine." 2>&1 | tee -a "$LOG" || true
   # enabling proper ENV's for Virtual Environment which should help
-  sed -i 's/^\([[:space:]]*no_hardware_cursors[[:space:]]*=[[:space:]]*\)false/\1true/' config/hypr/UserConfigs/UserSettings.conf
+  sed -i 's/^\([[:space:]]*no_hardware_cursors[[:space:]]*=[[:space:]]*\)2/\1true/' config/hypr/UserConfigs/UserSettings.conf
   sed -i '/env = WLR_RENDERER_ALLOW_SOFTWARE,1/s/^#//' config/hypr/UserConfigs/ENVariables.conf
-  sed -i '/env = LIBGL_ALWAYS_SOFTWARE,1/s/^#//' config/hypr/UserConfigs/ENVariables.conf
+  #sed -i '/env = LIBGL_ALWAYS_SOFTWARE,1/s/^#//' config/hypr/UserConfigs/ENVariables.conf
   sed -i '/monitor = Virtual-1, 1920x1080@60,auto,1/s/^#//' config/hypr/UserConfigs/Monitors.conf
 fi
 
@@ -81,6 +81,15 @@ if command -v dpkg &> /dev/null; then
 	echo "Debian/Ubuntu based distro. Disabling pyprland" 2>&1 | tee -a "$LOG" || true
   # disabling pyprland as causing issues
   sed -i '/^exec-once = pypr &/ s/^/#/' config/hypr/UserConfigs/Startup_Apps.conf
+fi
+
+# activating hyprcursor on env by checking if the directory ~/.icons/Bibata-Modern-Ice/hyprcursors exists
+if [ -d "$HOME/.icons/Bibata-Modern-Ice/hyprcursors" ]; then
+    # Define the config file path
+    HYPRCURSOR_ENV_FILE="config/hypr/UserConfigs/ENVariables.conf"
+
+    sed -i 's/^#env = HYPRCURSOR_THEME,Bibata-Modern-Ice/env = HYPRCURSOR_THEME,Bibata-Modern-Ice/' "$HYPRCURSOR_ENV_FILE"
+    sed -i 's/^#env = HYPRCURSOR_SIZE,24/env = HYPRCURSOR_SIZE,24/' "$HYPRCURSOR_ENV_FILE"
 fi
 
 # Function to detect keyboard layout using localectl or setxkbmap
@@ -194,6 +203,11 @@ if command -v asusctl >/dev/null 2>&1; then
     sed -i '/exec-once = rog-control-center &/s/^#//' config/hypr/UserConfigs/Startup_Apps.conf
 fi
 
+# Check if blueman-applet is installed and add blueman-applet on Startup
+if command -v blueman-applet >/dev/null 2>&1; then
+    sed -i '/exec-once = blueman-applet &/s/^#//' config/hypr/UserConfigs/Startup_Apps.conf
+fi
+
 printf "\n"
 
 # Checking if neovim or vim is installed and offer user if they want to make as default editor
@@ -208,7 +222,7 @@ EDITOR_SET=0
 # Check for neovim if installed
 if command -v nvim &> /dev/null; then
     printf "${INFO} ${ORANGE}neovim${RESET} is detected as installed\n"
-    read -p "${CAT} Do you want to make ${ORANGE}neovim${RESET} the default editor? (y/n): " EDITOR_CHOICE
+    read -p "${CAT} Do you want to make ${ORANGE}neovim${RESET} the default editor? (y/N): " EDITOR_CHOICE
     if [[ "$EDITOR_CHOICE" == "y" ]]; then
         update_editor "nvim"
         EDITOR_SET=1
@@ -220,7 +234,7 @@ printf "\n"
 # Check for vim if installed, but only if neovim wasn't chosen
 if [[ "$EDITOR_SET" -eq 0 ]] && command -v vim &> /dev/null; then
     printf "${INFO} ${ORANGE}vim${RESET} is detected as installed\n"
-    read -p "${CAT} Do you want to make ${ORANGE}vim${RESET} the default editor? (y/n): " EDITOR_CHOICE
+    read -p "${CAT} Do you want to make ${ORANGE}vim${RESET} the default editor? (y/N): " EDITOR_CHOICE
     if [[ "$EDITOR_CHOICE" == "y" ]]; then
         update_editor "vim"
         EDITOR_SET=1
@@ -235,10 +249,10 @@ printf "\n"
 
 # Action to do for better rofi and kitty appearance
 while true; do
-  echo "$ORANGE Select monitor resolution for better config appearance and fonts:"
-  echo "$YELLOW 1. less than 1440p (< 1440p)"
-  echo "$YELLOW 2. Equal to or higher than 1440p (≥ 1440p)"
-  read -p "$CAT Enter the number of your choice: " res_choice
+  echo "$ORANGE Select monitor resolution to properly configure appearance and fonts:"
+  echo "$YELLOW   -- Enter 1. for monitor res 1440p or less (< 1440p)"
+  echo "$YELLOW   -- Enter 2. for monitors res higher than 1440p (≥ 1440p)"
+  read -p "$CAT Enter the number of your choice (1 or 2): " res_choice
 
   case $res_choice in
     1)
@@ -347,7 +361,7 @@ printf "\n"
 printf "${ORANGE} By default, Rainbow Borders animation is enabled.\n"
 printf "${WARN} - However, this uses a bit more CPU and Memory resources.\n"
 
-read -p "${CAT} Do you want to disable Rainbow Borders animation? (Y/N): " border_choice
+read -p "${CAT} Do you want to disable Rainbow Borders animation? (y/N): " border_choice
 if [[ "$border_choice" =~ ^[Yy]$ ]]; then
     mv config/hypr/UserScripts/RainbowBorders.sh config/hypr/UserScripts/RainbowBorders.bak.sh
     
@@ -360,8 +374,7 @@ else
 fi
 printf "\n"
 
-# Copy Config Files #
-set -e # Exit immediately if a command exits with a non-zero status.
+set -e
 
 # Function to create a unique backup directory name with month, day, hours, and minutes
 get_backup_dirname() {
@@ -369,6 +382,12 @@ get_backup_dirname() {
   timestamp=$(date +"%m%d_%H%M")
   echo "back-up_${timestamp}"
 }
+
+# Check if the ~/.config/ directory exists
+if [ ! -d "$HOME/.config" ]; then
+  echo "${ERROR} - The ~/.config directory does not exist."
+  exit 1
+fi
 
 printf "${INFO} - copying dotfiles ${BLUE}first${RESET} part\n"
 # Config directories which will ask the user whether to replace or not
@@ -385,7 +404,7 @@ for DIR2 in $DIRS; do
   
   if [ -d "$DIRPATH" ]; then
     while true; do
-      read -p "${CAT} ${ORANGE}$DIR2${RESET} config found in ~/.config/ Do you want to replace ${ORANGE}$DIR2${RESET} config? (Y/N): " DIR1_CHOICE
+      read -p "${CAT} ${ORANGE}$DIR2${RESET} config found in ~/.config/ Do you want to replace ${ORANGE}$DIR2${RESET} config? (y/n): " DIR1_CHOICE
       case "$DIR1_CHOICE" in
         [Yy]* )
           BACKUP_DIR=$(get_backup_dirname)
@@ -472,7 +491,7 @@ for DIR_NAME in $DIR; do
   
   # Copy the new config
   if [ -d "config/$DIR_NAME" ]; then
-    cp -r "config/$DIR_NAME" ~/.config/"$DIR_NAME" 2>&1 | tee -a "$LOG"
+    cp -r "config/$DIR_NAME/" ~/.config/"$DIR_NAME" 2>&1 | tee -a "$LOG"
     if [ $? -eq 0 ]; then
       echo "${OK} - Copy of config for ${YELLOW}$DIR_NAME${RESET} completed!"
     else
@@ -481,73 +500,97 @@ for DIR_NAME in $DIR; do
     fi
   else
     echo "${ERROR} - Directory config/$DIR_NAME does not exist to copy."
-    exit 1
   fi
 done
 
-printf "\n"
+printf "\n%.0s" {1..2}
 
-printf "${INFO} - Copying dotfiles ${BLUE}hypr directory${RESET} part\n"
-
-# Check if the config directory exists
-if [ ! -d "config" ]; then
-  echo "${ERROR} - The 'config' directory does not exist."
-  exit 1
-fi
-
+# Restoring UserConfigs and UserScripts
 DIRH="hypr"
 FILES_TO_RESTORE=(
-  "Monitors.conf"
+  "ENVariables.conf"
+  "LaptopDisplay.conf"
   "Laptops.conf"
+  "Monitors.conf"
+  "Startup_Apps.conf"
+  "UserDecorAnimations.conf"
   "UserKeybinds.conf"
+  "UserSettings.conf"
+  "WindowRules.conf"
+  "WorkspaceRules.conf"
 )
 
 DIRPATH=~/.config/"$DIRH"
-# Backup the existing directory if it exists
-if [ -d "$DIRPATH" ]; then
-  echo -e "${NOTE} - Config for $DIRH found, attempting to back up."
-  BACKUP_DIR=$(get_backup_dirname)
-  
-  mv "$DIRPATH" "$DIRPATH-backup-$BACKUP_DIR" 2>&1 | tee -a "$LOG"
-  if [ $? -eq 0 ]; then
-    echo -e "${NOTE} - Backed up $DIRH to $DIRPATH-backup-$BACKUP_DIR."
-  else
-    echo "${ERROR} - Failed to back up ${ORANGE}$DIRH${RESET}."
-    exit 1
-  fi
+BACKUP_DIR=$(get_backup_dirname)
+BACKUP_DIR_PATH="$DIRPATH-backup-$BACKUP_DIR/UserConfigs"
+
+if [ -z "$BACKUP_DIR" ]; then
+  echo "${ERROR} - Backup directory name is empty. Exiting."
+  exit 1
 fi
 
-# Copy the new config
-if [ -d "config/$DIRH" ]; then
-  cp -r "config/$DIRH" "$DIRPATH" 2>&1 | tee -a "$LOG"
-  if [ $? -eq 0 ]; then
-    echo "${OK} - Copy of config for ${ORANGE}$DIRH${RESET} completed!"
+if [ -d "$BACKUP_DIR_PATH" ]; then
+  echo -e "${NOTE} Restoring previous ${ORANGE}User-Configs${RESET}... "
+  echo -e "${WARN} If you decide to restore the old configs, make sure to handle the updates or changes manually."
+  echo -e "${INFO} Kindly Visit and check KooL's Hyprland-Dots GitHub page for the commits."
 
-    # Loop through files to check and offer restoration
-    for FILE_NAME in "${FILES_TO_RESTORE[@]}"; do
-      BACKUP_FILE="$DIRPATH-backup-$BACKUP_DIR/UserConfigs/$FILE_NAME"
-      if [ -f "$BACKUP_FILE" ]; then
-        printf "\n${INFO} Found ${YELLOW}$FILE_NAME${RESET} in hypr backup...\n"
-        read -p "${CAT} Do you want to restore ${ORANGE}$FILE_NAME${RESET} from backup? (y/n): " file_restore
-        if [[ "$file_restore" == [Yy]* ]]; then
-          cp "$BACKUP_FILE" "$DIRPATH/UserConfigs/$FILE_NAME" && echo "${OK} - $FILE_NAME restored!" 2>&1 | tee -a "$LOG"
+  for FILE_NAME in "${FILES_TO_RESTORE[@]}"; do
+    BACKUP_FILE="$BACKUP_DIR_PATH/$FILE_NAME"
+    if [ -f "$BACKUP_FILE" ]; then
+      printf "\n${INFO} Found ${YELLOW}$FILE_NAME${RESET} in hypr backup...\n"
+      read -p "${CAT} Do you want to restore ${ORANGE}$FILE_NAME${RESET} from backup? (y/N): " file_restore
+
+      if [[ "$file_restore" == [Yy]* ]]; then
+        if cp "$BACKUP_FILE" "$DIRPATH/UserConfigs/$FILE_NAME"; then
+          echo "${OK} - $FILE_NAME restored!" 2>&1 | tee -a "$LOG"
         else
-          echo "${NOTE} - Skipped restoring $FILE_NAME."
+          echo "${ERROR} - Failed to restore $FILE_NAME!" 2>&1 | tee -a "$LOG"
         fi
+      else
+        echo "${NOTE} - Skipped restoring $FILE_NAME."
       fi
-    done
-  else
-    echo "${ERROR} - Failed to copy $DIRH."
-    exit 1
-  fi
-else
-  echo "${ERROR} - Directory config/$DIRH does not exist to copy."
-  exit 1
+    fi
+  done
 fi
 
 printf "\n%.0s" {1..2}
 
-# copying Wallpapers
+# Restoring previous UserScripts
+DIRSH="hypr"
+SCRIPTS_TO_RESTORE=(
+  "RofiBeats.sh"
+  "Weather.py"
+  "Weather.sh"
+)
+
+DIRSHPATH=~/.config/"$DIRSH"
+BACKUP_DIR_PATH="$DIRSHPATH-backup-$BACKUP_DIR/UserScripts"
+
+if [ -d "$BACKUP_DIR_PATH" ]; then
+  echo -e "${NOTE} Restoring previous ${ORANGE}User-Scripts${RESET}..."
+
+  for SCRIPT_NAME in "${SCRIPTS_TO_RESTORE[@]}"; do
+    BACKUP_SCRIPT="$BACKUP_DIR_PATH/$SCRIPT_NAME"
+
+    if [ -f "$BACKUP_SCRIPT" ]; then
+      printf "\n${INFO} Found ${YELLOW}$SCRIPT_NAME${RESET} in hypr backup...\n"
+      read -p "${CAT} Do you want to restore ${ORANGE}$SCRIPT_NAME${RESET} from backup? (y/N): " script_restore
+      if [[ "$script_restore" == [Yy]* ]]; then
+        if cp "$BACKUP_SCRIPT" "$DIRSHPATH/UserScripts/$SCRIPT_NAME"; then
+          echo "${OK} - $SCRIPT_NAME restored!" 2>&1 | tee -a "$LOG"
+        else
+          echo "${ERROR} - Failed to restore $SCRIPT_NAME!" 2>&1 | tee -a "$LOG"
+        fi
+      else
+        echo "${NOTE} - Skipped restoring $SCRIPT_NAME."
+      fi
+    fi
+  done
+fi
+
+printf "\n%.0s" {1..2}
+
+# Wallpapers
 mkdir -p ~/Pictures/wallpapers
 cp -r wallpapers ~/Pictures/ && { echo "${OK} some wallpapers compied!"; } || { echo "${ERROR} Failed to copy some wallpapers."; exit 1; } 2>&1 | tee -a "$LOG"
  
@@ -646,7 +689,7 @@ cleanup_backups() {
           echo "  - ${BACKUP##*/}"
         done
 
-        read -p "${CAT} Do you want to delete the older backups of ${ORANGE}${DIR##*/}${RESET} and keep the latest backup only? (y/n): " back_choice
+        read -p "${CAT} Do you want to delete the older backups of ${ORANGE}${DIR##*/}${RESET} and keep the latest backup only? (y/N): " back_choice
         if [[ "$back_choice" == [Yy]* ]]; then
           # Sort backups by modification time
           latest_backup="${BACKUP_DIRS[0]}"
@@ -682,4 +725,4 @@ wallust run -s $wallpaper 2>&1 | tee -a "$LOG"
 printf "\n%.0s" {1..4}
 printf "${OK} GREAT! KooL's Hyprland-Dots is now Loaded & Ready !!!"
 printf "\n%.0s" {1..1}
-printf "${ORANGE}HOWEVER I HIGHLY SUGGEST to logout and re-login or better reboot to avoid any issues\n\n"
+printf "${ORANGE} HOWEVER I HIGHLY SUGGEST to logout and re-login or better reboot to avoid any issues\n\n"

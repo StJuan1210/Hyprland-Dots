@@ -48,7 +48,7 @@ update_theme_mode() {
 
 # Function to notify user
 notify_user() {
-    notify-send -u low -i "$notif" "Switching to $1 mode"
+    notify-send -u low -i "$notif" "$(printf "\n Switching to $1 mode")"
 }
 
 # Use sed to replace the palette setting in the wallust config file
@@ -109,8 +109,9 @@ else
 	sed -i '/^background /s/^background .*/background #dddddd/' "${kitty_conf}"
 	sed -i '/^cursor /s/^cursor .*/cursor #000000/' "${kitty_conf}"
 fi
-
-
+for pid in $(pidof kitty); do
+    kill -SIGUSR1 "$pid"
+done
 
 
 # Set Dynamic Wallpaper for Dark or Light Mode
@@ -126,13 +127,13 @@ $swww "${next_wallpaper}" $effect
 
 # Set Kvantum Manager theme & QT5/QT6 settings
 if [ "$next_mode" = "Dark" ]; then
-    kvantum_theme="Catppuccin-Mocha"
-    qt5ct_color_scheme="$HOME/.config/qt5ct/colors/Catppuccin-Mocha.conf"
-    qt6ct_color_scheme="$HOME/.config/qt6ct/colors/Catppuccin-Mocha.conf"
+    kvantum_theme="catppuccin-mocha-blue"
+    #qt5ct_color_scheme="$HOME/.config/qt5ct/colors/Catppuccin-Mocha.conf"
+    #qt6ct_color_scheme="$HOME/.config/qt6ct/colors/Catppuccin-Mocha.conf"
 else
-    kvantum_theme="Catppuccin-Latte"
-    qt5ct_color_scheme="$HOME/.config/qt5ct/colors/Catppuccin-Latte.conf"
-    qt6ct_color_scheme="$HOME/.config/qt6ct/colors/Catppuccin-Latte.conf"
+    kvantum_theme="catppuccin-latte-blue"
+    #qt5ct_color_scheme="$HOME/.config/qt5ct/colors/Catppuccin-Latte.conf"
+    #qt6ct_color_scheme="$HOME/.config/qt6ct/colors/Catppuccin-Latte.conf"
 fi
 
 sed -i "s|^color_scheme_path=.*$|color_scheme_path=$qt5ct_color_scheme|" "$HOME/.config/qt5ct/qt5ct.conf"
@@ -228,15 +229,14 @@ set_custom_gtk_theme "$next_mode"
 # Update theme mode for the next cycle
 update_theme_mode
 
-sleep 0.5
-# Run remaining scripts
-${SCRIPTSDIR}/WallustSwww.sh
-sleep 1
+
+${SCRIPTSDIR}/WallustSwww.sh &&
+sleep 2
 ${SCRIPTSDIR}/Refresh.sh 
 
 sleep 0.3
-# Display notifications for theme and icon changes
-notify-send -u normal -i "$notif" "Themes in $next_mode Mode"
+# Display notifications for theme and icon changes 
+notify-send -u normal -i "$notif" "$(printf "\n Themes switched to \n $next_mode Mode")"
 
 exit 0
 
