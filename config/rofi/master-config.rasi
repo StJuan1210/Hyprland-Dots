@@ -4,11 +4,7 @@
 /* ---- Configuration ---- */
 
 configuration {
-<<<<<<< HEAD
-	font:						"Fira Code SemiBold 13";
-=======
 	font:						"JetBrainsMono Nerd Font SemiBold 12";
->>>>>>> upstream/main
 	modi:                       "drun,run,filebrowser";
     show-icons:                 true;
     display-drun:               "Apps";
@@ -73,7 +69,7 @@ inputbar {
     padding:                     10px 10px 50px 10px;
     margin:                      10px;
     background-color:            transparent;
-    border-radius:               25px;
+    border-radius:               20px;
     orientation:                 horizontal;
     children:                    ["entry", "dummy", "mode-switcher" ];
     background-image:            url("~/.config/rofi/.current_wallpaper", width);
@@ -158,7 +154,7 @@ scrollbar {
 element {
     enabled:                     true;
     spacing:                     10px;
-    padding:                     10px;
+  	padding: 					 10px;
     border-radius:               12px;
     background-color:            transparent;
     cursor:                      pointer;
@@ -212,7 +208,7 @@ element-icon {
     cursor:                      inherit;
 }
 element-text {
-    font:						"JetBrainsMono Nerd Font SemiBold 12";
+    font:						"JetBrainsMono Nerd Font SemiBold 14";
     background-color:            transparent;
     text-color:                  inherit;
     cursor:                      inherit;

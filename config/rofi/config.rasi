@@ -8,11 +8,6 @@ window {
     width:	50%;
 }
 
-/* ---- Entry input ---- */
-entry {
-    width:	18%;
-}
-
 /* ---- Mode Switcher ---- */
 button {
     width:	110px;
@@ -37,6 +32,6 @@ element-icon {
 }
 
 element-text {
-  font: "JetBrainsMono Nerd Font SemiBold 10";
+  font: "JetBrainsMono Nerd Font SemiBold 12";
   horizontal-align: 0.5;
 }
