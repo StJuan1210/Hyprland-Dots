@@ -3,15 +3,15 @@
 
 @import '../../.config/waybar/wallust/colors-waybar.css';
 
-@define-color backgroundlight @color5;
+@define-color backgroundlight @color0;
 @define-color backgrounddark @color12;
-@define-color workspacesbackground1 @color5;
+@define-color workspacesbackground1 @color0;
 @define-color workspacesbackground2 @color12;
-@define-color bordercolor @color11;
-@define-color textcolor1 #FFFFFF;
-@define-color textcolor2 #FFFFFF;
-@define-color textcolor3 #FFFFFF;
-@define-color iconcolor #FFFFFF;
+@define-color bordercolor @color13;
+@define-color textcolor1 @foreground;
+@define-color textcolor2 @foreground;
+@define-color textcolor3 @foreground;
+@define-color iconcolor @foreground;
 
 * {
 	font-family: "JetBrainsMono Nerd Font";
@@ -39,9 +39,7 @@ window#waybar {
     padding: 0px 2px;
     border-radius: 5px 5px 5px 5px;
     border: 0px;
-    font-weight: bold;
     font-style: normal;
-    opacity: 0.8;
     color: @textcolor1;
 }
 
@@ -50,9 +48,8 @@ window#waybar {
     margin: 3px 2px;
     border-radius: 3px 3px 3px 3px;
     color: @textcolor1;
-    background-color: @workspacesbackground2;
+    background-color: @workspacesbackground1;
     transition: all 0.1s linear;
-    opacity: 0.4;
 }
 
 #workspaces button.active {
@@ -61,7 +58,6 @@ window#waybar {
     border-radius: 3px 3px 3px 3px;
     min-width: 30px;
     transition: all 0.1s linear;
-    opacity:1.0;
 }
 
 #workspaces button:hover {
@@ -89,7 +85,6 @@ tooltip label {
     border-radius: 5px 5px 5px 5px;
     color:white;
     font-weight:normal;
-    opacity:0.8;
 }
 
 window#waybar.empty #window {
@@ -103,7 +98,6 @@ window#waybar.empty #window {
     border-radius: 5px 5px 5px 5px;
     font-weight: normal;
     font-style: normal;
-    opacity:0.8;
     border: 3px solid @backgroundlight;
 }
 
@@ -155,6 +149,7 @@ window#waybar.empty #window {
 #custom-browser,
 #custom-cava_mviz,
 #custom-cycle_wall,
+#custom-dot_update,
 #custom-file_manager,
 #custom-keybinds,
 #custom-keyboard,
@@ -163,8 +158,11 @@ window#waybar.empty #window {
 #custom-hint,
 #custom-hypridle,
 #custom-menu,
+#custom-playerctl,
 #custom-power_vertical,
 #custom-power,
+#custom-quit,
+#custom-reboot,
 #custom-settings,
 #custom-spotify,
 #custom-swaync,
@@ -184,7 +182,6 @@ window#waybar.empty #window {
     margin-right: 8px;
 	margin-left: 6px;
     font-size: 100%;
-    opacity: 0.8;
     color: @iconcolor;
 }
 
@@ -196,7 +193,6 @@ window#waybar.empty #window {
     margin-right: 15px;
     font-size: 102%;
     font-weight: bold;
-    opacity: 0.8;
     color: @iconcolor;
 }
 
@@ -204,7 +200,6 @@ window#waybar.empty #window {
     margin-right: 15px;
     font-size: 100%;
     font-weight: bold;
-    opacity: 0.8;
     color: #dc2f2f;
 }
 
@@ -214,7 +209,6 @@ window#waybar.empty #window {
     border-radius: 5px 5px 5px 5px;
     padding: 0px 10px 0px 10px;
     margin: 2px 17px 2px 0px;
-    opacity:0.8;
     border:3px solid @bordercolor;
 }
 
@@ -223,7 +217,6 @@ window#waybar.empty #window {
     color: @textcolor1;
     border-radius: 5px 5px 5px 5px;
     padding: 0px 0px 0px 6px;
-    opacity:0.8;
     border:3px solid @bordercolor;
 }
 
@@ -231,7 +224,6 @@ window#waybar.empty #window {
     margin: 0px 13px 0px 0px;
     padding:0px;
     color: @iconcolor;
-    opacity: 0.8;
 }
 
 #custom-updater {
@@ -240,7 +232,6 @@ window#waybar.empty #window {
     border-radius: 5px 5px 5px 5px;
     padding: 2px 10px 0px 10px;
     margin: 3px 15px 3px 0px;
-    opacity:0.8;
 }
 
 #custom-updates.green {
@@ -267,7 +258,6 @@ window#waybar.empty #window {
     border-radius: 3px 5px 3px 5px;
     padding: 1px 10px 0px 10px;
     margin: 3px 0px 3px 0px;
-    opacity:0.8;
     border:3px solid @bordercolor;   
 }
 
@@ -278,7 +268,6 @@ window#waybar.empty #window {
     border-radius: 5px 5px 5px 5px;
     padding: 2px 10px 0px 10px;
     margin: 3px 15px 3px 0px;
-    opacity:0.8;
 }
 
 #pulseaudio {
@@ -287,7 +276,6 @@ window#waybar.empty #window {
     border-radius: 5px 5px 5px 5px;
     padding: 2px 10px 0px 10px;
     margin: 3px 15px 3px 0px;
-    opacity:0.8;
 }
 
 #pulseaudio.muted {
@@ -301,7 +289,6 @@ window#waybar.empty #window {
     border-radius: 5px 5px 5px 5px;
     padding: 2px 10px 0px 10px;
     margin: 3px 15px 3px 0px;
-    opacity:0.8;
 }
 
 #network.ethernet {
@@ -320,7 +307,6 @@ window#waybar.empty #window {
     border-radius: 5px 5px 5px 5px;
     padding: 2px 10px 0px 10px;
     margin: 3px 15px 3px 0px;
-    opacity:0.8;
 }
 
 #bluetooth.off {
@@ -335,7 +321,6 @@ window#waybar.empty #window {
     border-radius: 5px 5px 5px 5px;
     padding: 2px 15px 0px 10px;
     margin: 3px 15px 3px 0px;
-    opacity:0.8;
 }
 
 #battery.charging, #battery.plugged {
@@ -370,4 +355,27 @@ window#waybar.empty #window {
 
 #tray > .needs-attention {
     -gtk-icon-effect: highlight;
+}
+
+#backlight-slider slider,
+#pulseaudio-slider slider {
+	min-width: 0px;
+	min-height: 0px;
+	opacity: 0;
+	background-image: none;
+	border: none;
+	box-shadow: none;
+}
+
+#backlight-slider trough,
+#pulseaudio-slider trough {
+	min-width: 80px;
+	min-height: 5px;
+	border-radius: 5px;
+}
+
+#backlight-slider highlight,
+#pulseaudio-slider highlight {
+	min-height: 10px;
+	border-radius: 5px;
 }

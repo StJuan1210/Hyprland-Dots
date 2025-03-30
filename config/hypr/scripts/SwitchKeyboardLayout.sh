@@ -4,7 +4,7 @@
 
 layout_file="$HOME/.cache/kb_layout"
 settings_file="$HOME/.config/hypr/UserConfigs/UserSettings.conf"
-notif_icon="$HOME/.config/swaync/images/bell.png"
+notif_icon="$HOME/.config/swaync/images/ja.png"
 
 # Refined ignore list with patterns or specific device names
 ignore_patterns=(
@@ -93,11 +93,11 @@ change_layout() {
 
 # Execute layout change and notify
 if ! change_layout; then
-    notify-send -u low -t 2000 'kb_layout' "$(printf '\n Error: Layout change failed')"
+    notify-send -u low -t 2000 'kb_layout' " Error:" " Layout change failed"
     echo "Layout change failed." >&2
     exit 1
 else
-    notify-send -u low -i "$notif_icon" "$(printf "\n New kb_layout: $new_layout")"
+    notify-send -u low -i "$notif_icon" " kb_layout: $new_layout"
     echo "Layout change notification sent."
 fi
 
