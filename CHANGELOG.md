@@ -1,4 +1,74 @@
-# Changelog — JAK's Hyprland Dotfiles
+# Changelog — KoolDots
+
+## v2.3.22
+
+- Fixed: Kitty font issue
+  - Thank you `@JasonNero` for the fix
+- Enabled `touch on tablet` in `hypr/configs/SystemSettings.conf`
+- Updated `copy.sh` to support `ghostty`
+- The ghostty config directory is now backed up
+- Restore ghostty config added to restore options
+- [S3cBar0n](https://github.com/S3cBar0n) updated `WallpaperSelect.sh`
+  - It shows filename for the random image, and current wallpaper
+  - Thanks for support Kooldots!
+- `SWWW` project is archived moving to `AWWW`
+  - It's feature, syntax compatible
+  - Already has some fixes added
+  - Created a startup script to check for `awww-daemon` or fallback to `swww-daemon`
+  - Suggest everyone remove `swww` and replace with `awww`
+    - This has been done in `NixOS-Hyprland` but you have to update to current build in main branch
+- FIXED: Long delay updating colors after wallpaper change
+- Added more app icons for `WaybarWorkspaces`
+  - Emacs
+  - Nautilus
+  - Set new default icon to terminal with red X if no icon is available
+- Fixed delay is `ScreenShot.sh` script
+  - Removed existing `sleep` commands
+  - Moved audio `Sound.sh` to background
+  - This relates to `pipewire` [issue](https://gitlab.freedesktop.org/pipewire/pipewire/-/issues/5155)
+- Fixed delay in `Sounds.sh`
+- Now uses `paplay` for sounds
+- Rewrote core logic of `DropDownterminal.sh`
+  - Doesn't use `specialworkspace` anymore
+  - Updates to Hyprland seem to break old logic
+  - The Dropdown would flash on hide
+- Fixed all float toggle
+  - Old command drepreciated
+  - Replaced with a script `Float-All-Windows.sh` in `Keybinds.conf` file
+- Fixed Package name for `waybar-weather`
+- Added `monocle` layout
+- Experimenting with some additional layerrules
+- Improving wallpaper based theming
+  - More consistent results
+  - Reducing the time to make change effective
+- Fixed several waybar style files with inconsitent colors
+- Updated `ChangeLayout` script for scrolling
+  - Requires Hyprland v0.54+
+- Added two keybinds for scrolling layout as a start
+  - SUPERSHIFT + comma swap columns
+  - SUPERSHIFT + period move to next column
+  - SUPERALT + H Horizonal Scrolling
+  - SUPERALT + V Vertical Scrolling
+- Updated `togglesplit` to `layoutmsg,togglesplit`
+  - Has been depreciated, w/0.54 it's not supported
+    - No errors just doesn't work
+- Fixed many of the WALLUST based waybars color issues
+  - Foreground/background colors were same light color
+- Kitty now has a "No color/no theme" option
+- Updated the Headers in the scripts to:
+  - KoolDots
+  - Added Project name and URL
+  - Added License info GPLv3 to each file also
+- Added new Rofi themes:
+  - dwm Horizontal (old classic dmenu style)
+  - dwm Vertical (dmenu with small dropdown list)
+  - TokyoNight
+- Changed `fastfetch` dotfiles name to `KoolDots`
+- ENVvariables file had both QT5CT and QT6CT variables
+  `    #Added style ENV for kvantum
+env = QT_QPA_PLATFORMTHEME,qt6ct
+env = QT_STYLE_OVERRIDE,kvantum`
+  > Note: Not sure how will this will work as I don't normally use kvantum
 
 ## v2.3.21
 

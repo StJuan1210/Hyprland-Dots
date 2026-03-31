@@ -1,5 +1,10 @@
 #!/usr/bin/env bash
-# /* ---- 💫 https://github.com/LinuxBeginnings 💫 ---- */  #
+# ==================================================
+#  KoolDots (2026)
+#  Project URL: https://github.com/LinuxBeginnings
+#  License: GNU GPLv3
+#  SPDX-License-Identifier: GPL-3.0-or-later
+# ==================================================
 # Purpose:
 #   Orchestrates copying/upgrading LinuxBeginnings's Hyprland dotfiles into ~/.config.
 #   Handles interactive prompts, backups/restores, per-app tweaks, and express mode.
@@ -593,6 +598,8 @@ printf "\\n%.0s" {1..1}
 
 restore_user_scripts "$LOG" "$EXPRESS_MODE"
 printf "\n%.0s" {1..1}
+restore_terminal_configs "$LOG" "$EXPRESS_MODE"
+printf "\\n%.0s" {1..1}
 
 restore_hypr_files "$LOG" "$EXPRESS_MODE"
 printf "\n%.0s" {1..1}
@@ -632,6 +639,27 @@ chmod +x "$HOME/.config/hypr/scripts/"* 2>&1 | tee -a "$LOG"
 chmod +x "$HOME/.config/hypr/UserScripts/"* 2>&1 | tee -a "$LOG"
 # Set executable for initial-boot.sh
 chmod +x "$HOME/.config/hypr/initial-boot.sh" 2>&1 | tee -a "$LOG"
+
+# Copy systemd user overrides (e.g., hyprpolkitagent)
+SYSTEMD_SRC="$DOTFILES_DIR/config/systemd"
+SYSTEMD_DEST="$HOME/.config/systemd"
+if [ -d "$SYSTEMD_SRC" ]; then
+  mkdir -p "$SYSTEMD_DEST"
+  cp -r "$SYSTEMD_SRC/." "$SYSTEMD_DEST/" 2>&1 | tee -a "$LOG"
+fi
+
+# Reload user systemd and ensure hyprpolkitagent is enabled/running
+if command -v systemctl >/dev/null 2>&1; then
+  if systemctl --user list-unit-files 2>/dev/null | grep -q '^hyprpolkitagent\.service'; then
+    if ! pgrep -u "$UID" -f 'xfce-polkit|polkit-gnome-authentication-agent-1|polkit-kde-authentication-agent-1|hyprpolkitagent' >/dev/null 2>&1; then
+      systemctl --user daemon-reload 2>&1 | tee -a "$LOG" || true
+      systemctl --user enable hyprpolkitagent 2>&1 | tee -a "$LOG" || true
+      systemctl --user start hyprpolkitagent 2>&1 | tee -a "$LOG" || true
+    else
+      echo "${NOTE} Polkit agent already running. Skipping hyprpolkitagent enable/start." | tee -a "$LOG"
+    fi
+  fi
+fi
 
 chassis_type=$(detect_waybar_config)
 if [ "$chassis_type" = "desktop" ]; then

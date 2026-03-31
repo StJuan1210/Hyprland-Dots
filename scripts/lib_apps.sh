@@ -1,4 +1,10 @@
 #!/usr/bin/env bash
+# ==================================================
+#  KoolDots (2026)
+#  Project URL: https://github.com/LinuxBeginnings
+#  License: GNU GPLv3
+#  SPDX-License-Identifier: GPL-3.0-or-later
+# ==================================================
 # App enablement and editor selection helpers.
 
 enable_asusctl() {
@@ -67,10 +73,18 @@ install_terminal_configs() {
   local base="${DOTFILES_DIR:-.}"
 
   # Ghostty
-  local GHOSTTY_SRC="$base/config/ghostty/ghostty.config"
+  local GHOSTTY_SRC="$base/config/ghostty/config"
   local GHOSTTY_DIR="${XDG_CONFIG_HOME:-$HOME/.config}/ghostty"
   local GHOSTTY_DEST="$GHOSTTY_DIR/config"
   if [ -f "$GHOSTTY_SRC" ]; then
+    if [ -d "$GHOSTTY_DIR" ]; then
+      BACKUP_DIR=$(get_backup_dirname)
+      local GHOSTTY_BACKUP="$GHOSTTY_DIR-backup-$BACKUP_DIR"
+      if [ ! -d "$GHOSTTY_BACKUP" ]; then
+        cp -a "$GHOSTTY_DIR" "$GHOSTTY_BACKUP" 2>&1 | tee -a "$log"
+        echo "${NOTE:-[NOTE]} - Backed up Ghostty config to $GHOSTTY_BACKUP." 2>&1 | tee -a "$log"
+      fi
+    fi
     mkdir -p "$GHOSTTY_DIR"
     install -m 0644 "$GHOSTTY_SRC" "$GHOSTTY_DEST" 2>&1 | tee -a "$log"
     if [ -f "$GHOSTTY_DIR/wallust.conf" ]; then
@@ -140,14 +154,32 @@ install_waybar_weather_binary() {
     return 0
   fi
 
+  # Sudo handling for /usr/bin and /usr/local/bin
+  local SUDO=""
+  if [[ $EUID -ne 0 ]]; then
+    if command -v sudo >/dev/null 2>&1; then
+      SUDO="sudo"
+    else
+      _err "sudo not available; cannot write to ${INSTALL_PATH} as non-root"
+      return 1
+    fi
+  fi
+
   if grep -qi '^ID=arch' /etc/os-release 2>/dev/null; then
-    if command -v pacman >/dev/null 2>&1 && pacman -Qi weather-waybar >/dev/null 2>&1; then
-      _log "weather-waybar already installed via pacman."
+    if command -v pacman >/dev/null 2>&1 && pacman -Qi waybar-weather >/dev/null 2>&1; then
+      _log "waybar-weather already installed via pacman."
       return 0
     fi
+
+    # If no package is installed but a static binary exists, remove it before AUR install
+    if [ -x /usr/bin/waybar-weather ] || [ -x /usr/local/bin/waybar-weather ]; then
+      _log "Removing waybar-weather static binary"
+      ${SUDO} rm -f /usr/bin/waybar-weather /usr/local/bin/waybar-weather || _warn "Failed to remove existing waybar-weather binary."
+    fi
+
     if command -v yay >/dev/null 2>&1; then
-      _log "Attempting to install AUR package 'weather-waybar' via yay"
-      if yay -S --noconfirm weather-waybar; then
+      _log "Attempting to install AUR package 'waybar-weather' via yay"
+      if yay -S --noconfirm waybar-weather; then
         _log "AUR install succeeded."
         return 0
       else
@@ -168,16 +200,6 @@ install_waybar_weather_binary() {
     return 1
   fi
 
-  # Sudo handling for /usr/bin
-  local SUDO=""
-  if [[ $EUID -ne 0 ]]; then
-    if command -v sudo >/dev/null 2>&1; then
-      SUDO="sudo"
-    else
-      _err "sudo not available; cannot write to ${INSTALL_PATH} as non-root"
-      return 1
-    fi
-  fi
 
   _log "Installing prebuilt binary to ${INSTALL_PATH} from ${ASSET}"
   if ${SUDO} sh -c "tmp=\$(mktemp '${INSTALL_PATH}.XXXXXX') && gzip -dc '$ASSET' > \"\$tmp\" && chmod 0755 \"\$tmp\" && mv -f \"\$tmp\" '${INSTALL_PATH}'"; then
