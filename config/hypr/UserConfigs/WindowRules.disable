@@ -1,0 +1,11 @@
+layerrule = blur,class:^([Rr]ofi)$
+layerrule = blur, overview
+layerrule = ignorezero, overview
+layerrule = ignorezero, <rofi>
+layerrule = unset,class:^([Rr]ofi)$
+windowrule = center,^([Ff]erdium)$
+windowrule = center,^(pavucontrol|org.pulseaudio.pavucontrol|com.saivert.pwvucontrol)
+windowrule = center,^([Ww]hatsapp-for-linux)$
+windowrule = fullscreen,gamescope
+windowrule = noblur,gamescope
+windowrule = workspace 6 silent,^(gamescope)$
