@@ -1,4 +1,4 @@
-/* ----------- 💫 https://github.com/JaKooLit 💫 -------- */
+/* ----------- 💫 https://github.com/LinuxBeginnings 💫 -------- */
 
 {
 "$schema": "https://github.com/fastfetch-cli/fastfetch/raw/dev/doc/json_schema.json",
@@ -28,9 +28,9 @@
     "keyColor": "31"
   },
   {
-    "type": "custom",
+    "type": "command",
     "key": " ├  ",
-    "format": "JaKooLit Version: {$DOTS_VERSION}",
+    "format": "echo LinuxBeginnings Version: ${DOTS_VERSION}",
     "keyColor": "31"
   },
   {

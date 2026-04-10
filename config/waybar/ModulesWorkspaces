@@ -1,4 +1,4 @@
-//* ---- 💫 https://github.com/JaKooLit 💫 ---- *//
+//* ---- 💫 https://github.com/LinuxBeginnings 💫 ---- *//
 /* Waybar Workspaces modules */
 
 /* Generally, this is a potential expanding of choices for hyprland/workspace */
@@ -180,7 +180,7 @@
 	  },
 	"format": "{icon} {windows}",
 	"format-window-separator": " ",
-	"window-rewrite-default": " ",
+	"window-rewrite-default": " <span foreground='#ff0000'>✘</span> ",
 	"window-rewrite": {		
 		"title<.*amazon.*>": " ",
 		"title<.*reddit.*>": " ",
@@ -198,10 +198,11 @@
 		"class<kitty-dropterm>": " ",
 		"class<com.mitchellh.ghostty>": " ",
 		"class<org.wezfurlong.wezterm>": " ",
+		"class<play.mii.Boxxy>": " ",
 		"class<Warp|warp|dev.warp.Warp|warp-terminal>": "󰰭 ",
 
-		"class<[Tt]hunderbird|[Tt]hunderbird-esr>": " ",
-		"class<eu.betterbird.Betterbird>": " ",
+    "class<[Tt]hunderbird|[Tt]hunderbird-esr>": "󰊫 ",
+		"class<org.mozilla.Thunderbird|eu.betterbird.Betterbird>": "󰊫 ",
 		"title<.*gmail.*>": "󰊫 ",
 
 		"class<[Tt]elegram-desktop|org.telegram.desktop|io.github.tdesktop_x64.TDesktop>": " ",
@@ -217,6 +218,7 @@
 		"title<.*ChatGPT.*>": "󰚩 ",
 		"title<.*deepseek.*>": "󰚩 ",
 		"title<.*qwen.*>": "󰚩 ",
+		"title<.*Gemini.*>": "󰚩 ",
 		"class<subl>": "󰅳 ",
 		"class<slack>": " ",
 
@@ -238,11 +240,16 @@
 		"class<virtualbox manager>": "💽 ",
 		"title<virtualbox>": "💽 ",
 		"class<remmina|org.remmina.Remmina>": "🖥️ ",
+		"class<mainline-gtk>": " ",
 
 		"class<VSCode|code|code-url-handler|code-oss|codium|codium-url-handler|VSCodium>": "󰨞 ",
+		"class<[Aa]ntigravity>": "󰨞 ",
+		"title<.*[Aa]ntigravity.*>": "󰨞 ",
 		"class<dev.zed.Zed>": "󰵁",
 		"class<codeblocks>": "󰅩 ",
 		"title<.*github.*>": " ",
+		"class<com-jetpackduba-gitnuro-MainKt>": " ",
+		"title<.*Gitnuro.*>": " ",
 		"class<mousepad>": " ",
 		"class<libreoffice-writer>": " ",
 		"class<libreoffice-startcenter>": "󰏆 ",
@@ -253,6 +260,7 @@
 		"title<.*figma.*>": " ",
 		"title<.*jira.*>": " ",
 		"class<jetbrains-idea>": " ",
+		"class<emacs|Emacs>": " ",
 
 		"class<obs|com.obsproject.Studio>": " ",
 
@@ -261,7 +269,7 @@
 		"class<nwg-displays>": " ",
 		"class<[Pp]avucontrol|org.pulseaudio.pavucontrol>": "󱡫 ",
 		"class<steam>": " ",
-		"class<thunar|nemo>": "󰝰 ",	
+		"class<thunar|nemo|org.gnome.Nautilus>": "󰝰 ",	
 		"class<Gparted>":"",
 		"class<gimp>": " ",
 		"class<emulator>": "📱 ",
@@ -269,6 +277,7 @@
 		"class<org.pipewire.Helvum>": "󰓃",
 		"class<localsend>":"",
 		"class<PrusaSlicer|UltiMaker-Cura|OrcaSlicer>": "󰹛",
+		"class<nvidia-settings>": "󰢮 ",
 
 		"class<io.github.kolunmi.Bazaar>": " ",
 		"title<^Bazaar$>": " ",
